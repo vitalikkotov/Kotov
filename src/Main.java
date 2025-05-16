@@ -1,49 +1,91 @@
-// Интерфейс стратегии
-interface PrintStrategy {
-    void print(String document);
-}
 
-// Конкретная стратегия для черно-белой печати
-class BlackAndWhitePrintStrategy implements PrintStrategy {
+import java.util.ArrayList;
+import java.util.List;
+
+// Класс, представляющий месяц
+class Month {
+    private String name;
+    private int numberOfDays;
+
+    public Month(String name, int numberOfDays) {
+        this.name = name;
+        this.numberOfDays = numberOfDays;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumberOfDays() {
+        return numberOfDays;
+    }
+
     @Override
-    public void print(String document) {
-        System.out.println("Печать документа в черно-белом варианте: " + document);
+    public String toString() {
+        return name + " (" + numberOfDays + " дней)";
     }
 }
 
-// Конкретная стратегия для цветной печати
-class ColorPrintStrategy implements PrintStrategy {
+// Класс, представляющий год, содержащий список месяцев
+class Year {
+    private int yearNumber;
+    private List<Month> months;
+
+    public Year(int yearNumber) {
+        this.yearNumber = yearNumber;
+        this.months = new ArrayList<>();
+        initializeMonths();
+    }
+
+    // Инициализация месяцев для стандартного невисокосного года
+    private void initializeMonths() {
+        months.add(new Month("Январь", 31));
+        months.add(new Month("Февраль", 28));
+        months.add(new Month("Март", 31));
+        months.add(new Month("Апрель", 30));
+        months.add(new Month("Май", 31));
+        months.add(new Month("Июнь", 30));
+        months.add(new Month("Июль", 31));
+        months.add(new Month("Август", 31));
+        months.add(new Month("Сентябрь", 30));
+        months.add(new Month("Октябрь", 31));
+        months.add(new Month("Ноябрь", 30));
+        months.add(new Month("Декабрь", 31));
+
+        // Для високосного года можно добавить проверку и изменить февраль на 29 дней
+    }
+
+    public int getYearNumber() {
+        return yearNumber;
+    }
+
+    public List<Month> getMonths() {
+        return months;
+    }
+
     @Override
-    public void print(String document) {
-        System.out.println("Печать документа в цвете: " + document);
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Год: ").append(yearNumber).append("\n");
+        for (Month month : months) {
+            sb.append(month).append("\n");
+        }
+        return sb.toString();
     }
 }
 
-// Класс принтера
-class Printer {
-    private PrintStrategy printStrategy;
-
-    public Printer(PrintStrategy printStrategy) {
-        this.printStrategy = printStrategy;
-    }
-
-    public void setPrintStrategy(PrintStrategy printStrategy) {
-        this.printStrategy = printStrategy;
-    }
-
-    public void printDocument(String document) {
-        printStrategy.print(document);
-    }
-}
-
-// Пример использования
 public class Main {
     public static void main(String[] args) {
-        Printer printer = new Printer(new BlackAndWhitePrintStrategy());
-        printer.printDocument("Документ 1");
+        // Создаем объект года, например, 2024
+        Year year2024 = new Year(2024);
 
-        // Меняем стратегию на цветную печать
-        printer.setPrintStrategy(new ColorPrintStrategy());
-        printer.printDocument("Документ 2");
+        // Вывод информации о году и его месяцах
+        System.out.println(year2024);
+
+        // Можно создать несколько объектов-месяцев отдельно, если нужно
+        Month customMonth = new Month("Мой месяц", 15);
+        System.out.println(customMonth);
+
+        // Или добавить их в год по необходимости
     }
 }
